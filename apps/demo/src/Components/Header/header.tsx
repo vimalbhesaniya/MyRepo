@@ -12,7 +12,6 @@ import React, { use, useContext, useEffect, useState } from "react";
 import { ScreenContext, UserContext } from "@/app/layout";
 import { useQuery } from "@tanstack/react-query";
 import { useGetMethod } from "@repo/sharedcomponentts";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 const Header = () => {
@@ -56,7 +55,7 @@ const Header = () => {
     <>
       <Grid2 container p={2} spacing={2} bgcolor={"thistle"}>
         <Grid2 size={8} display={"flex"} alignItems={"center"}>
-          <Typography>Dashboard</Typography>
+          <Typography>Hello👋 {user?.username}</Typography>
         </Grid2>
         <Grid2
           size={4}
@@ -65,8 +64,7 @@ const Header = () => {
           display={"flex"}
           justifyContent={"end"}
         >
-          <TextField variant="standard" placeholder="Search here..." />
-          <Stack onClick={handleClick}>
+          <Stack className="pointer" onClick={handleClick}>
             <Avatar
               alt={user?.username}
               sx={{ bgcolor: "ActiveBorder" }}
@@ -84,11 +82,20 @@ const Header = () => {
           horizontal: "right",
         }}
       >
-        <MenuItem onClick={handleClose}>My Profile</MenuItem>
+        <MenuItem onClick={() => {setAnchorEl(null);route.push("/Dashboard/Profile")}}>
+          My Profile
+        </MenuItem>
         <MenuItem onClick={handleCompleteProfileClick}>
           Complete Profile
         </MenuItem>
-        <MenuItem onClick={handleClose}>Log out</MenuItem>
+        <MenuItem
+          onClick={() => {
+            localStorage.clear();
+            route.replace("/");
+          }}
+        >
+          Log out
+        </MenuItem>
       </Menu>
     </>
   );

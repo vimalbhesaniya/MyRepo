@@ -79,7 +79,7 @@ const Form = () => {
     mutationFn: (data: TypeForm) => mutationFn(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["users"],
+        queryKey: ["getLoginUser"],
       });
       reset();
       setSkills([]);

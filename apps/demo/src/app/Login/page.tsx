@@ -1,8 +1,11 @@
 "use client";
-import { AuthRoute } from "../page";
-
+import Login from "@/Components/Login/Login";
 const Page = () => {
-  return AuthRoute();
+  return (
+    <>
+      <Login />
+    </>
+  );
 };
 
 export default Page;

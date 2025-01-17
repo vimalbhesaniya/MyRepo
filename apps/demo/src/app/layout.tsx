@@ -7,7 +7,7 @@ import { Model } from "@/Shared/Modal";
 import { createContext, useEffect, useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams, usePathname } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 export type ScreenType = {
   screen: string;
@@ -33,6 +33,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const route = useRouter();
+  const path = usePathname();
+  const publicRoute = ["/Login", "/", "/Signup"];
+  const privateRoute = ["/Dashboard", "/Dashboard/Profile", "/Dashboard/Home"];
+  console.log('call--path',path);
+  useEffect(() => {
+    if (localStorage.getItem("Login")) {
+      if (publicRoute.includes(path)) {
+        route.replace("/Dashboard");
+      }
+    } else {
+      if (privateRoute.includes(path)) {
+        route.replace("/");
+      }
+    }
+  }, [path]);
+
   const [screen, setScreen] = useState<string>("");
   const [globalObject, setGlobalObject] = useState<any>(null);
   const [user, setUser] = useState<any>(null);

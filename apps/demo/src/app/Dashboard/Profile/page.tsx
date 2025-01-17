@@ -3,7 +3,6 @@ import { Box, Grid2, Stack, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { UserContext } from "@/app/layout";
 import Icon from "@repo/icon/icon";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import MarkEmailUnreadIcon from "@mui/icons-material/MarkEmailUnread";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -24,7 +23,7 @@ const page = () => {
     <>
       <Stack m={5}>
         <Grid2 spacing={1} container size={12}>
-          <Grid2 size={"grow"}>
+          <Grid2 size={"grow"} display={"flex"} gap={3} alignItems={"center"}>
             <Box
               sx={{
                 borderRadius: "50%",
@@ -40,6 +39,10 @@ const page = () => {
               <Typography color="info" variant="h1">
                 {user?.username?.slice(0, 1)}
               </Typography>
+            </Box>
+            <Box>
+              <Typography>{user?.username}</Typography>
+              <Typography>{user?.email}</Typography>
             </Box>
           </Grid2>
         </Grid2>
@@ -61,16 +64,20 @@ const page = () => {
         {active == "PersonalDetails" && (
           <Stack>
             <Grid2 className="animate" size={12} bgcolor={"gainsboro"} p={2}>
-              <Icon
-                Icon={AlternateEmailIcon}
-                text={user?.username}
-                variant="h6"
-              />
-              <Icon
-                Icon={MarkEmailUnreadIcon}
-                text={user?.email}
-                variant="subtitle2"
-              />
+              <Typography bgcolor={"ghostwhite"} p={1}>
+                <Icon
+                  Icon={AlternateEmailIcon}
+                  text={user?.username}
+                  variant="h6"
+                />
+              </Typography>
+              <Typography bgcolor={"ghostwhite"} p={1}>
+                <Icon
+                  Icon={MarkEmailUnreadIcon}
+                  text={user?.email}
+                  variant="subtitle2"
+                />
+              </Typography>
             </Grid2>
           </Stack>
         )}
@@ -92,16 +99,14 @@ const page = () => {
         {active == "Description" && (
           <Stack>
             <Grid2 size={12} className="animate" bgcolor={"gainsboro"} p={2}>
-              <Icon
-                Icon={AlternateEmailIcon}
-                text={user?.username}
-                variant="h6"
-              />
-              <Icon
-                Icon={MarkEmailUnreadIcon}
-                text={user?.email}
+              <Typography
+                color="info"
+                p={1}
+                bgcolor={"ghostwhite"}
                 variant="subtitle2"
-              />
+              >
+                {user?.discription || "No Description Found"}
+              </Typography>
             </Grid2>
           </Stack>
         )}
@@ -122,17 +127,69 @@ const page = () => {
         </Grid2>
         {active == "ProfileDetails" && (
           <Stack>
-            <Grid2 className="animate" size={12} bgcolor={"gainsboro"} p={2}>
-              <Icon
-                Icon={AlternateEmailIcon}
-                text={user?.username}
-                variant="h6"
-              />
-              <Icon
-                Icon={MarkEmailUnreadIcon}
-                text={user?.email}
-                variant="subtitle2"
-              />
+            <Grid2
+              container
+              className="animate"
+              size={12}
+              spacing={2}
+              bgcolor={"gainsboro"}
+              p={2}
+            >
+              <Grid2 p={1} size={2} borderLeft={"4px solid black"}>
+                <Typography>Skills</Typography>
+              </Grid2>
+              <Grid2 size={10} container>
+                {user?.skills ? (
+                  user?.skills.map((skill: string) => {
+                    return (
+                      <>
+                        <Typography
+                          border={"1px solid gray"}
+                          borderRadius={1}
+                          color="info"
+                          bgcolor={"ghostwhite"}
+                          p={1}
+                        >
+                          {skill}
+                        </Typography>
+                      </>
+                    );
+                  })
+                ) : (
+                  <Typography
+                    border={"1px solid gray"}
+                    borderRadius={1}
+                    color="info"
+                    bgcolor={"ghostwhite"}
+                    p={1}
+                  >
+                    No Skills Found
+                  </Typography>
+                )}
+              </Grid2>
+            </Grid2>
+            <Grid2
+              container
+              className="animate"
+              size={12}
+              spacing={2}
+              bgcolor={"gainsboro"}
+              p={2}
+            >
+              <Grid2 p={1} size={2} borderLeft={"4px solid black"}>
+                <Typography>Profession</Typography>
+              </Grid2>
+              <Grid2 size={10} container>
+                <Typography
+                  border={"1px solid gray"}
+                  borderRadius={1}
+                  color="info"
+                  bgcolor={"ghostwhite"}
+                  p={1}
+                >
+                  {user?.profession || "No Profesion Found"}
+                </Typography>
+              </Grid2>
             </Grid2>
           </Stack>
         )}
