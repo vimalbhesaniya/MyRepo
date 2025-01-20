@@ -35,21 +35,6 @@ export default function RootLayout({
 }>) {
   const route = useRouter();
   const path = usePathname();
-  const publicRoute = ["/Login", "/", "/Signup"];
-  const privateRoute = ["/Dashboard", "/Dashboard/Profile", "/Dashboard/Home"];
-  console.log('call--path',path);
-  useEffect(() => {
-    if (localStorage.getItem("Login")) {
-      if (publicRoute.includes(path)) {
-        route.replace("/Dashboard");
-      }
-    } else {
-      if (privateRoute.includes(path)) {
-        route.replace("/");
-      }
-    }
-  }, [path]);
-
   const [screen, setScreen] = useState<string>("");
   const [globalObject, setGlobalObject] = useState<any>(null);
   const [user, setUser] = useState<any>(null);

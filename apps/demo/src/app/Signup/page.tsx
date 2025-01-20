@@ -18,7 +18,7 @@ import {
   UpdateType,
   ScreenType,
 } from "@/app/layout";
-import { FormSchema, TypeForm } from "../Dashboard/type";
+import { FormSchema, TypeForm } from "./type";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -44,14 +44,6 @@ const Form = () => {
   });
 
   useEffect(() => {
-    if (localStorage.getItem("Login")) {
-      router.replace("Dashboard");
-    } else {
-      router.replace("/Signup");
-    }
-  }, []);
-
-  useEffect(() => {
     if (isUpdating) {
       setValue("email", globalObject?.email);
       setValue("confirmPassword", globalObject?.confirmPassword);
@@ -70,6 +62,7 @@ const Form = () => {
         const response = await usePostMethod(url, {
           ...data,
           id: uid.toString(),
+          isComplated: false,
         });
         return response.data;
       } catch (error: any) {
@@ -170,7 +163,6 @@ const Form = () => {
             <Typography mb={2}>
               Already have an Account?{" "}
               <Button
-                role="link"
                 onClick={() => router.push("/Login")}
                 variant="text"
               >

@@ -1,15 +1,19 @@
 import { Grid2, Modal } from "@mui/material";
 import { ScreenContext, ScreenType } from "@/app/layout";
 import { useContext } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import { CloseRounded } from "@mui/icons-material";
 import Form from "./Modals/Form";
+import EditProfileModal from "./Modals/EditProfileModal";
 
 const Body = () => {
   const { screen } = useContext<ScreenType>(ScreenContext);
   switch (screen) {
     case "Form":
       return <Form />;
+      break;
+    case "EditProfile":
+      return <EditProfileModal key={uuidv4()} />;
       break;
     default:
       return <>No Modal Found</>;
@@ -20,6 +24,7 @@ const Body = () => {
 export function Model({ open, setScreen }: any) {
   return (
     <Modal
+      key={uuidv4()}
       style={{
         display: "flex",
         justifyContent: "center",

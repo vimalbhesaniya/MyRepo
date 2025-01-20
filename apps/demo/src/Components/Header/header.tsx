@@ -13,6 +13,7 @@ import { ScreenContext, UserContext } from "@/app/layout";
 import { useQuery } from "@tanstack/react-query";
 import { useGetMethod } from "@repo/sharedcomponentts";
 import { useRouter } from "next/navigation";
+import { deleteCookie, getCookie } from "@/Shared/Hooks/useCookie";
 
 const Header = () => {
   const { user, setUser } = useContext<any>(UserContext);
@@ -24,7 +25,7 @@ const Header = () => {
   const { data, isSuccess } = useQuery({
     queryKey: ["getLoginUser"],
     queryFn: async () => {
-      const loginId = localStorage.getItem("Login");
+      const loginId = await getCookie("Login");
       return await useGetMethod(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}data/${loginId}`
       );
@@ -33,10 +34,8 @@ const Header = () => {
   const route = useRouter();
 
   useEffect(() => {
-    if (isSuccess) {
-      setUser(data);
-    }
-  });
+    setUser(data);
+  }, [data]);
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -46,9 +45,14 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const handleCompleteProfileClick = () => {
+  const handleProfile = (open: string) => {
+    setScreen(open);
     setAnchorEl(null);
-    setScreen("Form");
+  };
+
+  const handleLogOut = async () => {
+    deleteCookie("Login");
+    route.replace("/");
   };
 
   return (
@@ -82,20 +86,24 @@ const Header = () => {
           horizontal: "right",
         }}
       >
-        <MenuItem onClick={() => {setAnchorEl(null);route.push("/Dashboard/Profile")}}>
-          My Profile
-        </MenuItem>
-        <MenuItem onClick={handleCompleteProfileClick}>
-          Complete Profile
-        </MenuItem>
         <MenuItem
           onClick={() => {
-            localStorage.clear();
-            route.replace("/");
+            setAnchorEl(null);
+            route.push("/Dashboard/Profile");
           }}
         >
-          Log out
+          My Profile
         </MenuItem>
+
+        <MenuItem
+          onClick={() =>
+            handleProfile(user?.isComplated ? "EditProfile" : "Form")
+          }
+        >
+          {user?.isComplated ? "Edit profile" : "Complete Profile"}
+        </MenuItem>
+
+        <MenuItem onClick={handleLogOut}>Log out</MenuItem>
       </Menu>
     </>
   );

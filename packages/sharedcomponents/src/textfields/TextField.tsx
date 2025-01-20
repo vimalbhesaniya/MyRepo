@@ -55,7 +55,7 @@ export function Textfield({
   console.log(name);
   return (
     <>
-      <Stack mt={1}>
+      <Stack mt={1} width={"100%"}>
         {labelText && (
           <FormLabel
             component={"label"}
@@ -69,9 +69,9 @@ export function Textfield({
         {type == "textarea" ? (
           <>
             <TextareaAutosize
+              {...field}
               maxRows={12}
               minRows={8}
-              {...field}
               name={name}
               placeholder={placeholder}
               onChange={(event) => handleChange(event)}
@@ -96,6 +96,7 @@ export function Textfield({
             {...field}
             label={placeholder}
             fullWidth
+            type={inputType}
             name={name}
             error={Boolean(errorMessage?.message)}
             helperText={errorMessage?.message}

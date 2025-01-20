@@ -18,4 +18,12 @@ export const FormSchema = z.object({
   ),
 });
 
+export const EditFormSchema = FormSchema.extend({
+  username: z
+    .string()
+    .min(2, { message: "Username is required" })
+    .max(10, { message: "Only 10 characters are allowed" }),
+});
+
 export type TypeForm = z.infer<typeof FormSchema>;
+export type EditForm = z.infer<typeof EditFormSchema>;

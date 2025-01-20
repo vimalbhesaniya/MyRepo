@@ -29,6 +29,7 @@
     "@tanstack/react-query": "^5.64.1",
     "@tanstack/react-query-devtools": "^5.64.1",
     "axios": "^1.7.9",
+    "cookie": "^1.0.2",
     "demo": "^0.1.0",
     "json-server": "^1.0.0-beta.3",
     "list": "^2.0.19",

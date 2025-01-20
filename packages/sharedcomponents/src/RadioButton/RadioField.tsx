@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { FieldError, useController } from "react-hook-form";
-
+import { v4 as uuidv4 } from "uuid";
 export interface RadioFieldOptions {
   value: string | number;
   label: string;
@@ -29,7 +29,6 @@ interface Props extends InputProps {
 export function RadioField({
   name = "",
   control,
-  errorMessage,
   RadioOptions,
   defaultValue,
 }: Props) {
@@ -56,6 +55,7 @@ export function RadioField({
             return (
               <FormControlLabel
                 {...field}
+                key={uuidv4()}
                 name={name}
                 onChange={(e: any) => handleChange(e)}
                 value={option.value}

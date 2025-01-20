@@ -15,7 +15,7 @@ import { UserContext } from "@/app/layout";
 import { useRouter } from "next/navigation";
 import { LoginFormType, LoginFormSchema } from "./type";
 import { toast } from "react-toastify";
-
+import { setCookie } from "@/Shared/Hooks/useCookie";
 const Form = () => {
   const [loginData, setLoginData] = useState({
     email: "",
@@ -44,10 +44,10 @@ const Form = () => {
       );
       if (data?.length) {
         if (data[0].password === loginData.password) {
-          localStorage.setItem("Login", data[0].id);
+          setCookie("Login", data[0].id);
           setUser(data[0]);
           toast.success("You are in!");
-          router.push("Dashboard");
+          router.push("/Dashboard");
         }
       } else {
         toast.error("Email or Password are not matched");

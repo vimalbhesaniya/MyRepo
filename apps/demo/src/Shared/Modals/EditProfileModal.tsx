@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TypeForm, FormSchema } from "./type";
+import { TypeForm, FormSchema, EditForm, EditFormSchema } from "./type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { randomId } from "@/Utils/RandomId";
 import { v4 as uuidv4 } from "uuid";
@@ -36,39 +36,10 @@ import {
   ScreenType,
   UserContext,
 } from "@/app/layout";
+import { checkBoxValue, options, RadioOptions } from "./Form";
+import { toast } from "react-toastify";
 
-export const checkBoxValue = [
-  "Javascript",
-  "HTML",
-  "CSS",
-  "React JS",
-  "Next jS",
-];
-export const options: SelectFieldOption[] = [
-  { value: "doctor", label: "Doctor" },
-  { value: "nurse", label: "Nurse" },
-  { value: "pharmacist", label: "Pharmacist" },
-  { value: "surgeon", label: "Surgeon" },
-  { value: "therapist", label: "Therapist" },
-  { value: "softwareEngineer", label: "Software Engineer" },
-  { value: "dataScientist", label: "Data Scientist" },
-  { value: "webDeveloper", label: "Web Developer" },
-  { value: "cybersecurityAnalyst", label: "Cybersecurity Analyst" },
-  { value: "uxUiDesigner", label: "UX/UI Designer" },
-  { value: "teacher", label: "Teacher" },
-  { value: "principal", label: "Principal" },
-  { value: "counselor", label: "Counselor" },
-  { value: "tutor", label: "Tutor" },
-  { value: "professor", label: "Professor" },
-];
-
-export const RadioOptions: RadioFieldOptions[] = [
-  { value: "Female", label: "Female" },
-  { value: "Male", label: "Male" },
-  { value: "Other", label: "Other" },
-];
-
-const Form = () => {
+const EditProfileModal = () => {
   const { isUpdating, setIsUpdating } = useContext<UpdateType>(UpdateContext);
   const { setScreen } = useContext<ScreenType>(ScreenContext);
   const { globalObject, setGlobalObject } = useContext<any>(DataContext);
@@ -82,21 +53,22 @@ const Form = () => {
     setValue,
     register,
     formState: { errors },
-  } = useForm<TypeForm>({
+  } = useForm<EditForm>({
     defaultValues: {
-      discription: "",
-      skills: [],
-      profession: "",
-      gender: "Female",
+      discription: user.discription,
+      skills: user.skills,
+      profession: user.profession,
+      gender: user.gender,
+      username: user.username,
     },
-    resolver: zodResolver(FormSchema),
+    resolver: zodResolver(EditFormSchema),
   });
 
   const uid = randomId();
   const queryClient = useQueryClient();
 
   const mutationFn = useCallback(
-    async (data: any) => {
+    async (data: EditForm) => {
       const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}data/${user?.id}`;
       return await usePutMethod(url, {
         ...user,
@@ -107,11 +79,13 @@ const Form = () => {
     [isUpdating, globalObject]
   );
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: TypeForm) => mutationFn(data),
+    mutationFn: (data: EditForm) => mutationFn(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["getLoginUser"],
       });
+      toast.success("Updated successfully");
+      setScreen("");
       reset();
       setSkills([]);
     },
@@ -140,6 +114,14 @@ const Form = () => {
               <Grid2 size={4}>
                 <Textfield
                   control={control}
+                  errorMessage={errors.username}
+                  labelText="Username"
+                  name="username"
+                />
+              </Grid2>
+              <Grid2 size={4}>
+                <Textfield
+                  control={control}
                   errorMessage={errors.discription}
                   labelText="Discription"
                   type="textarea"
@@ -152,16 +134,14 @@ const Form = () => {
                 <Stack direction={"row"} flexWrap={"wrap"}>
                   {checkBoxValue.map((value) => {
                     return (
-                      <>
-                        <CheckboxField
-                          key={uuidv4()}
-                          control={control}
-                          val={value}
-                          checked={watch("skills").includes(value)}
-                          id={value}
-                          name="skills"
-                        />
-                      </>
+                      <CheckboxField
+                        key={uuidv4()}
+                        control={control}
+                        val={value}
+                        checked={watch("skills").includes(value)}
+                        id={value}
+                        name="skills"
+                      />
                     );
                   })}
                 </Stack>
@@ -206,4 +186,4 @@ const Form = () => {
     </>
   );
 };
-export default Form;
+export default EditProfileModal;
