@@ -10,22 +10,14 @@ import {
 import { useQuery, useMutation } from "@tanstack/react-query";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import {
-  DataContext,
-  ScreenContext,
-  ScreenType,
-  UpdateContext,
-  UpdateType,
-} from "../layout";
+import { ScreenContext, ScreenType } from "@/Shared/Context/ScreenContext";
 
 const TextField = () => {
   const getData = async () => {
     return await useGetMethod(`${process.env.NEXT_PUBLIC_BACKEND_URL}data`);
   };
 
-  const { isUpdating, setIsUpdating } = useContext<UpdateType>(UpdateContext);
   const { screen, setScreen } = useContext<ScreenType>(ScreenContext);
-  const { globalObject, setGlobalObject } = useContext<any>(DataContext);
   const { data, isError, isLoading, error, refetch } = useQuery({
     queryKey: ["users"],
     queryFn: getData,
@@ -42,8 +34,6 @@ const TextField = () => {
     useDeleteMethod(`${process.env.NEXT_PUBLIC_BACKEND_URL}data/${id}`);
 
   const handleUpdate = (row: any) => {
-    setIsUpdating(true);
-    setGlobalObject(row);
     setScreen("Form");
   };
 

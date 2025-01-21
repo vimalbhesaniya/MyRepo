@@ -28,14 +28,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { randomId } from "@/Utils/RandomId";
 import { v4 as uuidv4 } from "uuid";
 
-import {
-  UpdateContext,
-  ScreenContext,
-  DataContext,
-  UpdateType,
-  ScreenType,
-  UserContext,
-} from "@/app/layout";
+import { UserContext } from "../Context/UserContext";
+import { ScreenContext, ScreenType } from "../Context/ScreenContext";
 
 export const checkBoxValue = [
   "Javascript",
@@ -69,9 +63,7 @@ export const RadioOptions: RadioFieldOptions[] = [
 ];
 
 const Form = () => {
-  const { isUpdating, setIsUpdating } = useContext<UpdateType>(UpdateContext);
   const { setScreen } = useContext<ScreenType>(ScreenContext);
-  const { globalObject, setGlobalObject } = useContext<any>(DataContext);
   const { user, setUser } = useContext<any>(UserContext);
   const [skills, setSkills] = useState<string[]>([]);
   const {
@@ -95,17 +87,14 @@ const Form = () => {
   const uid = randomId();
   const queryClient = useQueryClient();
 
-  const mutationFn = useCallback(
-    async (data: any) => {
-      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}data/${user?.id}`;
-      return await usePutMethod(url, {
-        ...user,
-        ...data,
-        isComplated: true,
-      });
-    },
-    [isUpdating, globalObject]
-  );
+  const mutationFn = async (data: any) => {
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}data/${user?.id}`;
+    return await usePutMethod(url, {
+      ...user,
+      ...data,
+      isComplated: true,
+    });
+  };
   const { mutate, isPending } = useMutation({
     mutationFn: (data: TypeForm) => mutationFn(data),
     onSuccess: () => {
@@ -196,7 +185,7 @@ const Form = () => {
                   variant="contained"
                   type={"submit"}
                 >
-                  {isUpdating ? "Update" : "Submit"}
+                  Submit
                 </Button>
               </Grid2>
             </Grid2>

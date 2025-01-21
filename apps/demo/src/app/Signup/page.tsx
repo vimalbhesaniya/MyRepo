@@ -11,20 +11,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { randomId } from "@/Utils/RandomId";
-import {
-  UpdateContext,
-  ScreenContext,
-  DataContext,
-  UpdateType,
-  ScreenType,
-} from "@/app/layout";
 import { FormSchema, TypeForm } from "./type";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { ScreenContext, ScreenType } from "@/Shared/Context/ScreenContext";
 
 const Form = () => {
   const { setScreen } = useContext<ScreenType>(ScreenContext);
-  const { globalObject, setGlobalObject } = useContext<any>(DataContext);
   const router = useRouter();
   const {
     control,
@@ -60,7 +53,6 @@ const Form = () => {
       });
       toast.success("Success! Your account has been created.");
       reset();
-      setGlobalObject(null);
       setScreen("");
     },
     onError: (error: any) => {

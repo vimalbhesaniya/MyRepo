@@ -1,10 +1,10 @@
 import { Grid2, Modal } from "@mui/material";
-import { ScreenContext, ScreenType } from "@/app/layout";
 import { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { CloseRounded } from "@mui/icons-material";
 import Form from "./Modals/Form";
 import EditProfileModal from "./Modals/EditProfileModal";
+import { ScreenContext, ScreenType } from "./Context/ScreenContext";
 
 const Body = () => {
   const { screen } = useContext<ScreenType>(ScreenContext);

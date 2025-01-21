@@ -14,17 +14,14 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Icon from "@repo/icon/icon";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 const CustomCard = ({ data }: any) => {
   console.log(data);
   return (
     <>
-      <Card
-        variant="outlined"
-        sx={{ maxWidth: "500px", width: "100%" }}
-      >
+      <Card variant="outlined" sx={{  width: "100%" }}>
         <CardContent>
-          <Grid2 
+          <Grid2
             container
             width={"100%"}
             justifyContent={"space-between"}
@@ -52,7 +49,7 @@ const CustomCard = ({ data }: any) => {
             <Icon Icon={CurrencyRupeeIcon} text={data?.salary} />
           </Typography>
           <Typography variant="h6">About this job</Typography>
-          <Typography variant="body2" color="text.secondary" paragraph>
+          <Typography variant="body2" color="text.secondary">
             -{data?.description}
           </Typography>
         </CardContent>
@@ -60,7 +57,7 @@ const CustomCard = ({ data }: any) => {
           <Button size="small" variant="outlined" color="primary">
             Apply Now
           </Button>
-          <Button  size="small" variant="outlined" color="primary" >
+          <Button size="small" variant="outlined" color="primary">
             <BookmarkBorderIcon />
           </Button>
         </CardActions>

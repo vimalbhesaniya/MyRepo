@@ -9,15 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 import React, { use, useContext, useEffect, useState } from "react";
-import { ScreenContext, UserContext } from "@/app/layout";
 import { useQuery } from "@tanstack/react-query";
 import { useGetMethod } from "@repo/sharedcomponentts";
 import { useRouter } from "next/navigation";
 import { deleteCookie, getCookie } from "@/Shared/Hooks/useCookie";
+import { UserContext } from "@/Shared/Context/UserContext";
+import { ScreenContext, ScreenType } from "@/Shared/Context/ScreenContext";
 
 const Header = () => {
   const { user, setUser } = useContext<any>(UserContext);
-  const { screen, setScreen } = useContext<any>(ScreenContext);
+  const { screen, setScreen } = useContext<ScreenType>(ScreenContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

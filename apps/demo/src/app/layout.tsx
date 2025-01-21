@@ -9,10 +9,8 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useRouter, useParams, usePathname } from "next/navigation";
 import { ToastContainer } from "react-toastify";
-export type ScreenType = {
-  screen: string;
-  setScreen: React.Dispatch<React.SetStateAction<string>>;
-};
+import { UserWrapper } from "@/Shared/Context/UserContext";
+import { ScreenWrapper } from "@/Shared/Context/ScreenContext";
 
 export type UpdateType = {
   isUpdating: boolean;
@@ -20,14 +18,7 @@ export type UpdateType = {
 };
 
 const client = new QueryClient();
-export const ScreenContext: any = createContext<ScreenType | undefined>(
-  undefined
-);
-export const DataContext: any = createContext<any>(undefined);
-export const UpdateContext: any = createContext<UpdateType | undefined>(
-  undefined
-);
-export const UserContext: any = createContext<any>(undefined);
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +28,6 @@ export default function RootLayout({
   const path = usePathname();
   const [screen, setScreen] = useState<string>("");
   const [globalObject, setGlobalObject] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   return (
     <>
@@ -45,16 +35,12 @@ export default function RootLayout({
         <body>
           <ToastContainer />
           <QueryClientProvider client={client}>
-            <UserContext.Provider value={{ user, setUser }}>
-              <UpdateContext.Provider value={{ isUpdating, setIsUpdating }}>
-                <DataContext.Provider value={{ globalObject, setGlobalObject }}>
-                  <ScreenContext.Provider value={{ screen, setScreen }}>
-                    <Model open={screen} setScreen={setScreen} />
-                    {children}
-                  </ScreenContext.Provider>
-                </DataContext.Provider>
-              </UpdateContext.Provider>
-            </UserContext.Provider>
+            <UserWrapper>
+              <ScreenWrapper>
+                <Model open={screen} setScreen={setScreen} />
+                {children}
+              </ScreenWrapper>
+            </UserWrapper>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </body>

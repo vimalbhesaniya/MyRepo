@@ -11,11 +11,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormSchema } from "../../Shared/Modals/type";
 import { useQuery } from "@tanstack/react-query";
-import { UserContext } from "@/app/layout";
 import { useRouter } from "next/navigation";
 import { LoginFormType, LoginFormSchema } from "./type";
 import { toast } from "react-toastify";
 import { setCookie } from "@/Shared/Hooks/useCookie";
+import { UserContext } from "@/Shared/Context/UserContext";
 const Form = () => {
   const [loginData, setLoginData] = useState({
     email: "",

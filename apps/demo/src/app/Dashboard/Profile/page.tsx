@@ -1,7 +1,6 @@
 "use client";
 import { Box, Button, Grid2, Stack, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "@/app/layout";
 import Icon from "@repo/icon/icon";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import MarkEmailUnreadIcon from "@mui/icons-material/MarkEmailUnread";
@@ -17,6 +16,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "@/Shared/Hooks/useCookie";
+import { UserContext } from "@/Shared/Context/UserContext";
 const page = () => {
   const { user, setUser } = useContext<any>(UserContext);
   const [active, setActive] = useState("");
