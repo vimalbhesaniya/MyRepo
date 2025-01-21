@@ -11,12 +11,8 @@ export const useGetMethod = async (url: string) => {
 };
 
 export const usePostMethod = async (url: string, data: any) => {
-  try {
-    const response = await axios.post(url, data);
-    return response.data;
-  } catch (error) {
-    return error;
-  }
+  const response = await axios.post(url, data);
+  return response.data;
 };
 
 export const useDeleteMethod = async (url: string, body?: any) => {

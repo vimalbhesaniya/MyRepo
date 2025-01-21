@@ -23,7 +23,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const Form = () => {
-  const { isUpdating, setIsUpdating } = useContext<UpdateType>(UpdateContext);
   const { setScreen } = useContext<ScreenType>(ScreenContext);
   const { globalObject, setGlobalObject } = useContext<any>(DataContext);
   const router = useRouter();
@@ -42,33 +41,18 @@ const Form = () => {
     },
     resolver: zodResolver(FormSchema),
   });
-
-  useEffect(() => {
-    if (isUpdating) {
-      setValue("email", globalObject?.email);
-      setValue("confirmPassword", globalObject?.confirmPassword);
-      setValue("password", globalObject?.password);
-      setValue("username", globalObject?.username);
-    }
-  }, [isUpdating]);
-
   const uid = randomId();
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (data: TypeForm) => {
-      try {
-        const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}data`;
-        const response = await usePostMethod(url, {
-          ...data,
-          id: uid.toString(),
-          isComplated: false,
-        });
-        return response.data;
-      } catch (error: any) {
-        toast.error(error);
-        throw new Error(error);
-      }
+      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}data`;
+      const response = await usePostMethod(url, {
+        ...data,
+        id: uid.toString(),
+        isComplated: false,
+      });
+      return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -76,12 +60,11 @@ const Form = () => {
       });
       toast.success("Success! Your account has been created.");
       reset();
-      setIsUpdating(false);
       setGlobalObject(null);
       setScreen("");
     },
     onError: (error: any) => {
-      toast.error(error);
+      toast.error(error?.message);
     },
   });
 
@@ -162,10 +145,7 @@ const Form = () => {
           <Stack mt={2} direction={"row"} alignItems={"center"}>
             <Typography mb={2}>
               Already have an Account?{" "}
-              <Button
-                onClick={() => router.push("/Login")}
-                variant="text"
-              >
+              <Button onClick={() => router.push("/Login")} variant="text">
                 Login
               </Button>{" "}
             </Typography>

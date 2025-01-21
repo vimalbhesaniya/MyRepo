@@ -77,12 +77,12 @@ const TextField = () => {
   return (
     <>
       <Stack gap={4} marginTop={2}>
-        {/* <Table
+        <Table
           Actions={renderActions}
           cells={TableCells}
           rows={data}
           isPending={isLoading}
-        /> */}
+        />
       </Stack>
     </>
   );
