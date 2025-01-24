@@ -1,18 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Checkbox } from "@mui/material";
 import {
   FormLabel,
-  Grid2,
-  IconButton,
-  InputAdornment,
   InputProps,
   Stack,
-  TextareaAutosize,
-  TextField,
 } from "@mui/material";
-import { FieldError, useController, useForm } from "react-hook-form";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { FieldError, useController } from "react-hook-form";
 
 interface Props extends InputProps {
   name?: string;
@@ -37,20 +31,19 @@ export function CheckboxField({
   labelText,
   val,
   checked,
-  ...props
 }: Props) {
   const { field } = useController({
-    name: "skills",
+    name,
     control,
     defaultValue: [],
   });
   const { value, onChange } = field;
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value: skill, checked } = event.target;
+    const { value: selectedValue, checked } = event.target;
     if (checked) {
-      onChange([...value, skill]);
+      onChange([...value, selectedValue]);
     } else {
-      onChange(value.filter((v: string) => v !== skill));
+      onChange(value.filter((v: string) => v !== selectedValue));
     }
   };
 

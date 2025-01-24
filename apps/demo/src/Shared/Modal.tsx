@@ -6,22 +6,17 @@ import Form from "./Modals/Form";
 import EditProfileModal from "./Modals/EditProfileModal";
 import { ScreenContext, ScreenType } from "./Context/ScreenContext";
 
-const Body = () => {
-  const { screen } = useContext<ScreenType>(ScreenContext);
-  switch (screen) {
-    case "Form":
-      return <Form />;
-      break;
-    case "EditProfile":
-      return <EditProfileModal key={uuidv4()} />;
-      break;
-    default:
-      return <>No Modal Found</>;
-      break;
-  }
+type Body = {
+  [key: string]: React.JSX.Element | null;
 };
 
-export function Model({ open, setScreen }: any) {
+const children: Body = {
+  Form: <Form />,
+  EditProfile: <EditProfileModal />,
+};  
+
+export function Model() {
+  const { screen, setScreen } = useContext<ScreenType>(ScreenContext);
   return (
     <Modal
       key={uuidv4()}
@@ -31,7 +26,7 @@ export function Model({ open, setScreen }: any) {
         alignItems: "center",
       }}
       onClose={() => setScreen("")}
-      open={open}
+      open={Boolean(screen)}
     >
       <>
         <Grid2>
@@ -47,7 +42,7 @@ export function Model({ open, setScreen }: any) {
             }}
           />{" "}
         </Grid2>
-        <Body />
+        {screen ? children[screen] : null}
       </>
     </Modal>
   );

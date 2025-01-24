@@ -51,6 +51,7 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  console.log(screen);
   const handleLogOut = async () => {
     deleteCookie("Login");
     route.replace("/");

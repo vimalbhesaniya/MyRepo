@@ -1,16 +1,21 @@
-import { createContext, useState } from "react";
+import React, { createContext, ReactNode, useState } from "react";
 
 export type ScreenType = {
   screen: string;
   setScreen: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const ScreenContext: any = createContext<ScreenType | undefined>(
-  undefined
-);
+export const ScreenContext = createContext<ScreenType>({
+  screen: "",
+  setScreen: () => {},
+});
 
-export const ScreenWrapper = ({ children }: { children: React.ReactNode }) => {
-  const [screen, setScreen] = useState<any>(null);
+interface WrapperProps {
+  children: ReactNode;
+}
+
+export const ScreenWrapper = ({ children }: WrapperProps) => {
+  const [screen, setScreen] = useState<string>("");
   return (
     <ScreenContext.Provider value={{ screen, setScreen }}>
       {children}
